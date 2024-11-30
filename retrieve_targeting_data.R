@@ -552,7 +552,7 @@ mark_list <- us_markers %>%
   split(1:nrow(.)) %>% 
   map(~{
     thetframe <- .x$tframe
-   the_data <- arrow::read_parquet(glue::glue("https://github.com/favstats/meta_ad_targeting/releases/download/IE-{.x$tframe}/{.x$ds}.parquet"))  %>% 
+   the_data <- arrow::read_parquet(glue::glue("https://github.com/favstats/meta_ad_targeting/releases/download/IS-{.x$tframe}/{.x$ds}.parquet"))  %>% 
       select(-page_name, -party, -remove_em) %>% 
       left_join(all_dat  ) %>% 
       mutate(tframe = parse_number(as.character(.x$tframe))) %>%
@@ -564,26 +564,26 @@ mark_list <- us_markers %>%
    djt_page <- the_data %>% 
      filter(page_id %in% unique(last7$page_id)[1:1000])
    
-   if(length(unique(djt_page$page_id))<1000){
-     try({
-       
-     print("djt not found")
-     djt_page <<- unique(last7$page_id)[1:1000] %>%
-       setdiff(the_data$page_id) %>%
-       map_dfr_progress(
-       ~{get_page_insights(.x, timeframe = thetframe, include_info = "targeting_info")},
-       .progress = T
-     ) %>%
-       as_tibble() %>%
-       # select(-page_name, -party, -remove_em) %>%
-       left_join(all_dat) %>%
-       mutate(tframe = parse_number(as.character(.x$tframe))) %>%
-       mutate(total_spend_formatted = parse_number(as.character(total_spend_formatted)))
-
-     the_data <- djt_page %>%
-       bind_rows(the_data)
-     })
-   }
+   # if(length(unique(djt_page$page_id))<1000){
+   #   try({
+   #     
+   #   print("djt not found")
+   #   djt_page <<- unique(last7$page_id)[1:1000] %>%
+   #     setdiff(the_data$page_id) %>%
+   #     map_dfr_progress(
+   #     ~{get_page_insights(.x, timeframe = thetframe, include_info = "targeting_info")},
+   #     .progress = T
+   #   ) %>%
+   #     as_tibble() %>%
+   #     # select(-page_name, -party, -remove_em) %>%
+   #     left_join(all_dat) %>%
+   #     mutate(tframe = parse_number(as.character(.x$tframe))) %>%
+   #     mutate(total_spend_formatted = parse_number(as.character(total_spend_formatted)))
+   # 
+   #   the_data <- djt_page %>%
+   #     bind_rows(the_data)
+   #   })
+   # }
 
    
 

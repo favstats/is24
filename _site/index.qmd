@@ -35,7 +35,7 @@ options(scipen = 999)
 # 
 # options(highcharter.lang = hcoptslang)
 
-
+# setwd("C:/Users/favstats/Dropbox/postdoc/is24/")
 source(here::here("utils.R"))
 source(here::here("party_utils.R"))
 
