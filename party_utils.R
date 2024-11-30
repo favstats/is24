@@ -383,7 +383,7 @@ sets <- jsonlite::fromJSON("settings.json")
 # #   
 # # }
 
-election_dat30 <- readRDS("../data/election_dat30.rds")  %>% 
+election_dat30 <- readRDS("data/election_dat30.rds")  %>% 
   as_tibble() %>% 
   filter(is.na(no_data)) %>% 
   drop_na(party) %>% 

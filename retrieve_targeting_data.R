@@ -160,7 +160,7 @@ if(Sys.info()[["sysname"]]=="Windows"){
   tf <- "30"
 }
 
-jb <- get_page_insights("7860876103", timeframe = glue::glue("LAST_90_DAYS"), include_info = "targeting_info") %>% as_tibble()
+jb <- get_page_insights("103875099042033", timeframe = glue::glue("LAST_90_DAYS"), include_info = "targeting_info") %>% as_tibble()
 
 new_ds <- jb %>% arrange(ds) %>% slice(1) %>% pull(ds)
 
@@ -235,7 +235,8 @@ all_dat <- wtm_data %>%
   filter(!remove_em) %>%
   # filter(n >= 2) %>%
   # filter(n >= 2 & str_ends(page_id, "0", negate = T)) %>%
-  select(-n)
+  select(-n)  %>%
+  mutate_all(as.character)
 
 # wtm_data %>% 
 #   filter(party == "Donald Trump") %>% View()
@@ -553,8 +554,7 @@ mark_list <- us_markers %>%
     thetframe <- .x$tframe
    the_data <- arrow::read_parquet(glue::glue("https://github.com/favstats/meta_ad_targeting/releases/download/IE-{.x$tframe}/{.x$ds}.parquet"))  %>% 
       select(-page_name, -party, -remove_em) %>% 
-      left_join(all_dat  %>%
-                  mutate_all(as.character) ) %>% 
+      left_join(all_dat  ) %>% 
       mutate(tframe = parse_number(as.character(.x$tframe))) %>%
       mutate(total_spend_formatted = parse_number(as.character(total_spend_formatted)))
     
